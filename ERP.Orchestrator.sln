@@ -1,10 +1,16 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.Orchestrator.AppHost", "ERP.Orchestrator.AppHost\ERP.Orchestrator.AppHost.csproj", "{311908EC-5BA2-4134-A6FD-16920E810E74}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.Orchestrator.ServiceDefaults", "ERP.Orchestrator.ServiceDefaults\ERP.Orchestrator.ServiceDefaults.csproj", "{A042F9B2-5234-4195-AE9F-C610EB5491B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.ProductService.API", "Services\ProductService\ERP.ProductService.API\ERP.ProductService.API.csproj", "{D9CE9AF8-E7BB-4CF7-B518-AD07C5A002C1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{31E33395-0522-4ED4-B7F2-D9B1600C77AE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProductService", "ProductService", "{F01077DC-1159-493D-AD4D-8FC119BF3015}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,8 +26,16 @@ Global
 		{A042F9B2-5234-4195-AE9F-C610EB5491B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A042F9B2-5234-4195-AE9F-C610EB5491B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A042F9B2-5234-4195-AE9F-C610EB5491B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9CE9AF8-E7BB-4CF7-B518-AD07C5A002C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9CE9AF8-E7BB-4CF7-B518-AD07C5A002C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9CE9AF8-E7BB-4CF7-B518-AD07C5A002C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9CE9AF8-E7BB-4CF7-B518-AD07C5A002C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D9CE9AF8-E7BB-4CF7-B518-AD07C5A002C1} = {F01077DC-1159-493D-AD4D-8FC119BF3015}
+		{F01077DC-1159-493D-AD4D-8FC119BF3015} = {31E33395-0522-4ED4-B7F2-D9B1600C77AE}
 	EndGlobalSection
 EndGlobal
