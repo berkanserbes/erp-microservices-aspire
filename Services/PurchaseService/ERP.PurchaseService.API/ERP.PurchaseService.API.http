@@ -1,4 +1,4 @@
-@ERP.PurchaseService.API_HostAddress = http://localhost:5143
+@ERP.PurchaseService.API_HostAddress = http://localhost:5064
 
 GET {{ERP.PurchaseService.API_HostAddress}}/weatherforecast/
 Accept: application/json
