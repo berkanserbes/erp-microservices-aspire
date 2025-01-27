@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PurchaseService", "Purchase
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.PurchaseService.API", "Services\PurchaseService\ERP.PurchaseService.API\ERP.PurchaseService.API.csproj", "{1E9BD737-8CE3-4340-A11F-3EEDB0AAB998}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.Shared", "ERP.Shared\ERP.Shared.csproj", "{C2E39E2B-0B1D-4010-B619-ADBD82C3A3CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{1E9BD737-8CE3-4340-A11F-3EEDB0AAB998}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E9BD737-8CE3-4340-A11F-3EEDB0AAB998}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E9BD737-8CE3-4340-A11F-3EEDB0AAB998}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2E39E2B-0B1D-4010-B619-ADBD82C3A3CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2E39E2B-0B1D-4010-B619-ADBD82C3A3CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2E39E2B-0B1D-4010-B619-ADBD82C3A3CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2E39E2B-0B1D-4010-B619-ADBD82C3A3CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
