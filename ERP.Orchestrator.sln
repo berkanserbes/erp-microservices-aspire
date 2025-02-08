@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.PurchaseService.API", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.Shared", "ERP.Shared\ERP.Shared.csproj", "{C2E39E2B-0B1D-4010-B619-ADBD82C3A3CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.Orchestrator.Gateway", "ERP.Orchestrator.Gateway\ERP.Orchestrator.Gateway.csproj", "{56DE8399-6E1D-488E-8C3D-5CDD637C5E01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{C2E39E2B-0B1D-4010-B619-ADBD82C3A3CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2E39E2B-0B1D-4010-B619-ADBD82C3A3CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2E39E2B-0B1D-4010-B619-ADBD82C3A3CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56DE8399-6E1D-488E-8C3D-5CDD637C5E01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56DE8399-6E1D-488E-8C3D-5CDD637C5E01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56DE8399-6E1D-488E-8C3D-5CDD637C5E01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56DE8399-6E1D-488E-8C3D-5CDD637C5E01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
