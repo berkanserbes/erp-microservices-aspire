@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERP.Shared.Domain.Abstract;
+namespace ERP.Shared.Domain.Entities.Abstract;
 
 public abstract class BaseTransactionLine : BaseEntity
 {

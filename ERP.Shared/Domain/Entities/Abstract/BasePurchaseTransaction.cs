@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERP.Shared.Domain;
+namespace ERP.Shared.Domain.Entities.Abstract;
 
-public class Unitset
+public abstract class BasePurchaseTransaction : BaseTransaction
 {
 }
