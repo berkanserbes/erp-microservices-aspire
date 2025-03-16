@@ -28,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AuthService", "AuthService"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.AuthService.API", "Services\AuthService\ERP.AuthService.API\ERP.AuthService.API.csproj", "{DFC5E332-7E19-4689-87DD-C057E418D916}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERP.ProductService.Infrastructure", "Services\ProductService\ERP.ProductService.Infrastructure\ERP.ProductService.Infrastructure\ERP.ProductService.Infrastructure.csproj", "{1A50D63E-C861-4D8A-844E-7060490D74B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,10 @@ Global
 		{DFC5E332-7E19-4689-87DD-C057E418D916}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFC5E332-7E19-4689-87DD-C057E418D916}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFC5E332-7E19-4689-87DD-C057E418D916}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A50D63E-C861-4D8A-844E-7060490D74B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A50D63E-C861-4D8A-844E-7060490D74B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A50D63E-C861-4D8A-844E-7060490D74B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A50D63E-C861-4D8A-844E-7060490D74B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,5 +85,9 @@ Global
 		{1E9BD737-8CE3-4340-A11F-3EEDB0AAB998} = {34DA9421-1B23-4CD3-8199-1BFAD5F98AE4}
 		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {31E33395-0522-4ED4-B7F2-D9B1600C77AE}
 		{DFC5E332-7E19-4689-87DD-C057E418D916} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{1A50D63E-C861-4D8A-844E-7060490D74B8} = {F01077DC-1159-493D-AD4D-8FC119BF3015}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C43FAC42-AFFD-4EB7-B035-045C9EBE170E}
 	EndGlobalSection
 EndGlobal
