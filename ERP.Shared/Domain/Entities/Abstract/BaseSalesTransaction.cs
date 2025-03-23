@@ -8,4 +8,5 @@ namespace ERP.Shared.Domain.Entities.Abstract;
 
 public abstract class BaseSalesTransaction : BaseTransaction
 {
+	public string CustomerCode { get; protected set; } = string.Empty;
 }

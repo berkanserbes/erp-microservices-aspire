@@ -10,6 +10,8 @@ public abstract class BaseTransactionLine : BaseEntity
 {
 	public string ProductCode { get; protected set; } = string.Empty;
 	public string ProductName { get; protected set; } = string.Empty;
+	public string VariantCode { get; protected set;} = string.Empty;
+	public string VariantName { get; protected set; } = string.Empty;
 	public string SubUnitsetCode { get; protected set; } = string.Empty;
 	public string SubUnitsetName { get; protected set; } = string.Empty;
 	public string UnitsetCode { get; protected set; } = string.Empty;

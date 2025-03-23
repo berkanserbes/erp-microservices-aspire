@@ -10,6 +10,6 @@ namespace ERP.Shared.Domain.Entities;
 public class Driver : BaseEntity
 {
 	public string Name { get; protected set; } = string.Empty;
-	public string SurName { get; protected set; } = string.Empty;
+	public string Surname { get; protected set; } = string.Empty;
 	public string IdentityNumber { get; protected set; } = string.Empty;
 }

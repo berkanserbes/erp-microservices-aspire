@@ -13,6 +13,6 @@ public abstract class BaseTransaction : BaseEntity
 	public string Name { get; protected set; } = string.Empty;
 	public string DocumentNumber { get; protected set; } = string.Empty;
 	public string Description { get; protected set; } = string.Empty;
-
+	public int WarehouseNumber { get; protected set; }
 
 }
