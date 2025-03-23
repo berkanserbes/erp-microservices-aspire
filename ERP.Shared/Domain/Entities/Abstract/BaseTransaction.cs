@@ -10,9 +10,7 @@ public abstract class BaseTransaction : BaseEntity
 {
 	public DateTime TransactionDate { get; protected set; }
 	public string Code { get; protected set; } = string.Empty;
-	public string Name { get; protected set; } = string.Empty;
 	public string DocumentNumber { get; protected set; } = string.Empty;
 	public string Description { get; protected set; } = string.Empty;
 	public int WarehouseNumber { get; protected set; }
-
 }

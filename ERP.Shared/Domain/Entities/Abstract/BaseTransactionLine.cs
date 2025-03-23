@@ -13,9 +13,7 @@ public abstract class BaseTransactionLine : BaseEntity
 	public string VariantCode { get; protected set;} = string.Empty;
 	public string VariantName { get; protected set; } = string.Empty;
 	public string SubUnitsetCode { get; protected set; } = string.Empty;
-	public string SubUnitsetName { get; protected set; } = string.Empty;
 	public string UnitsetCode { get; protected set; } = string.Empty;
-	public string UnitsetName { get; protected set; } = string.Empty;
 	public double Quantity { get; protected set; } = default;
 	public double ConversionRate { get; protected set; } = default;
 	public double OtherConversionRate { get; protected set; } = default;
