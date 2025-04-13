@@ -7,8 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Contracts\" />
-    <Folder Include="Domain\DTOs\" />
+    <Compile Remove="Domain\DTOs\**" />
+    <EmbeddedResource Remove="Domain\DTOs\**" />
+    <None Remove="Domain\DTOs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Contracts\Events\" />
   </ItemGroup>
 
   <ItemGroup>
