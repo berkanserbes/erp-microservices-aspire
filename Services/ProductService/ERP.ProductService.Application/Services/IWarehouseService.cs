@@ -8,7 +8,7 @@ namespace ERP.ProductService.Application.Services;
 public interface IWarehouseService
 {
 	Task<DataResult<IEnumerable<GetWarehouseResponse>>> GetAllAsync();
-	Task<DataResult<GetWarehouseResponse>> GetByNumberAsync(CreateWarehouseRequest createWarehouseRequest);
+	Task<DataResult<GetWarehouseResponse>> GetByNumberAsync(GetWarehouseRequest getWarehouseRequest);
 	Task<DataResult<CreateWarehouseResponse>> AddAsync(CreateWarehouseRequest createWarehouseRequest);
 	Task<DataResult<UpdateWarehouseResponse>> UpdateAsync(UpdateWarehouseRequest updateWarehouseRequest);
 	Task<DataResult<DeleteWarehouseResponse>> DeleteAsync(DeleteWarehouseRequest deleteWarehouseRequest);
