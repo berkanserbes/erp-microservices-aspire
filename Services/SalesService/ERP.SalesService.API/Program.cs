@@ -1,10 +1,27 @@
+using ERP.SalesService.Application.Services;
+using ERP.SalesService.Infrastructure.Contexts;
+using ERP.SalesService.Infrastructure.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddDbContext<SalesDbContext>(options =>
+{
+	// Configure postgresql db
+	//options.UseNpgsql(builder.Configuration.GetConnectionString("SalesDatabase"));
+});
+
+
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -12,6 +29,9 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
 	app.MapOpenApi();
+
+	app.UseSwagger();
+	app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
