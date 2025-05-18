@@ -8,4 +8,5 @@ public class Warehouse : BaseEntity
 	public string Name { get; protected set; } = string.Empty;
 
 	public ICollection<Location> Locations { get; } = new List<Location>();
+	//public ICollection<Product> Products { get; } = new List<Product>();
 }
