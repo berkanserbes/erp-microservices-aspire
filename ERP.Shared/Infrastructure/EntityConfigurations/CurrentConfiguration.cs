@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace ERP.Shared.Infrastructure.EntityConfigurations;
 
-public class CurrentConfiguration : BaseEntityConfiguration<Current>
+public class CurrentConfiguration<T> : BaseEntityConfiguration<T> where T : Current
 {
-	public override void Configure(EntityTypeBuilder<Current> builder)
+	public override void Configure(EntityTypeBuilder<T> builder)
 	{
 		base.Configure(builder);
 
