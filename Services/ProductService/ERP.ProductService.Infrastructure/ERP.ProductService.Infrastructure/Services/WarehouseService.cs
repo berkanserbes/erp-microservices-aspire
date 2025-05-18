@@ -58,6 +58,8 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 				Message = "Warehouse created successfully.",
 				Data = response
 			};
+
+			_logger.LogInformation($"Success (CreateWarehouseRequest - ProductService.Infrastructure): {result.Message} - {result.Data.Id}");
 		}
 		catch (Exception ex)
 		{
@@ -69,8 +71,7 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 				Data = null
 			};
 		}
-
-		_logger.LogInformation($"Success (CreateWarehouseRequest - ProductService.Infrastructure): Warehouse with number ({request.Number}) created successfully.");
+		
 		return result;
 	}
 
@@ -111,6 +112,7 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 				Data = deleteWarehouseResponse
 			};
 
+			_logger.LogInformation($"Success (DeleteWarehouseRequest - ProductService.Infrastructure): {result.Message} - {result.Data.Id}");
 		}
 		catch (Exception ex)
 		{
@@ -123,7 +125,7 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 			};
 
 		}
-		_logger.LogInformation($"Success (DeleteWarehouseRequest - ProductService.Infrastructure): {result.Message}");
+		
 		return result;
 	}
 
@@ -146,6 +148,8 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 				Message = "Warehouses retrieved successfully.",
 				Data = warehouses
 			};
+
+			_logger.LogInformation($"Success (GetWarehouseResponse - ProductService.Infrastructure): {result.Message} - {result.Data.Count()}");
 		}
 		catch (Exception ex)
 		{
@@ -159,7 +163,6 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 			};
 		}
 
-		_logger.LogInformation($"Success (GetWarehouseResponse - ProductService.Infrastructure): Warehouses retrieved successfully.");
 		return result;
 	}
 
@@ -196,6 +199,8 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 				Message = "Warehouses retrieved successfully.",
 				Data = warehouse
 			};
+
+			_logger.LogInformation($"Success (GetWarehouseResponse - ProductService.Infrastructure): {result.Message} - {result.Data.Id}");
 		}
 		catch (Exception ex)
 		{
@@ -209,7 +214,6 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 			};
 		}
 
-		_logger.LogInformation($"Success (GetWarehouseResponse - ProductService.Infrastructure): {result.Message}");
 		return result;
 	}
 
@@ -249,6 +253,8 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 				Message = $"Warehouse with number ({warehouse.Number}) updated successfully.",
 				Data = updateWarehouseResponse
 			};
+
+			_logger.LogInformation($"Success (UpdateWarehouseRequest - ProductService.Infrastructure): {result.Message}");
 		}
 		catch (Exception ex)
 		{
@@ -261,7 +267,6 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 			};
 		}
 
-		_logger.LogInformation($"Success (UpdateWarehouseRequest - ProductService.Infrastructure): {result.Message}");
 		return result;
 	}
 }

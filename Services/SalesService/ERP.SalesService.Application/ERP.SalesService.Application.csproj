@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\ERP.Shared\ERP.Shared.csproj" />
-    <ProjectReference Include="..\ERP.SalesService.Application\ERP.SalesService.Application.csproj" />
   </ItemGroup>
 
 </Project>

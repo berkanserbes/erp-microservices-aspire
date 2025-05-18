@@ -1,4 +1,6 @@
+using ERP.ProductService.Application.Services;
 using ERP.ProductService.Infrastructure.Contexts;
+using ERP.ProductService.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,8 @@ builder.Services.AddDbContext<ProductDbContext>(options =>
 });
 
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<IWarehouseService, WarehouseService>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
