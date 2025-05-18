@@ -2,6 +2,6 @@
 
 namespace ERP.Shared.Contracts.DTOs.PurchaseService.Supplier.Requests;
 
-public class CreateSupplierRequest : CreateCurrentRequest
+public class DeleteSupplierRequest : DeleteCurrentRequest
 {
 }

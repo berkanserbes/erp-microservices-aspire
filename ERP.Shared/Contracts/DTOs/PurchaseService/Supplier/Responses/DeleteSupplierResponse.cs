@@ -2,6 +2,6 @@
 
 namespace ERP.Shared.Contracts.DTOs.PurchaseService.Supplier.Responses;
 
-public class CreateSupplierResponse : CreateCurrentResponse
+public class DeleteSupplierResponse : DeleteCurrentResponse
 {
 }

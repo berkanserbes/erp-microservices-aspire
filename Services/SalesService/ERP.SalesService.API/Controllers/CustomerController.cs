@@ -88,7 +88,7 @@ public class CustomerController(ILogger<CustomerController> logger, ICustomerSer
 				Message = $"Error: {ex.Message}",
 				Data = null
 			};
-			_logger.LogError($"Error (AddAsync - SalesService.API.Controllers.SalesController): {ex.Message}");
+			_logger.LogError($"Error (AddAsync - SalesService.API.Controllers.SalesController.CustomerController): {ex.Message}");
 			return BadRequest(result);
 		}
 
