@@ -8,4 +8,5 @@ namespace ERP.Shared.Contracts.DTOs.ProductService.Warehouse.Requests;
 
 public class DeleteWarehouseRequest
 {
+	public int Number { get; set; }
 }
