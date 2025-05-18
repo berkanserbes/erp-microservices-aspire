@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Contracts\DTOs\BaseDTOs\Current\Requests\" />
     <Folder Include="Contracts\Events\" />
   </ItemGroup>
 

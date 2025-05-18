@@ -1,11 +1,10 @@
-﻿namespace ERP.Shared.Domain.Entities.Abstract;
+﻿namespace ERP.Shared.Contracts.DTOs.BaseDTOs.Current.Requests;
 
-public abstract class Current : BaseEntity
+public abstract class CreateCurrentRequest
 {
 	public string Code { get; set; } = string.Empty;
 	public string Name { get; set; } = string.Empty;
 	public string Email { get; set; } = string.Empty;
 	public string Phone { get; set; } = string.Empty;
 	public string Address { get; set; } = string.Empty;
-
 }

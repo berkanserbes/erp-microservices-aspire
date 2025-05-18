@@ -42,15 +42,5 @@ public class CurrentConfiguration<T> : BaseEntityConfiguration<T> where T : Curr
 			.HasColumnName("address")
 			.HasColumnType("varchar(255)")
 			.HasMaxLength(255);
-
-		builder.Property(b => b.City)
-			   .HasColumnName("city")
-			   .HasColumnType("varchar(35)")
-			   .HasMaxLength(35);
-
-		builder.Property(b => b.Country)
-			   .HasColumnName("country")
-			   .HasColumnType("varchar(30)")
-			   .HasMaxLength(30);
 	}
 }

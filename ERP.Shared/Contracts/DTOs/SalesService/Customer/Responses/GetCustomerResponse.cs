@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 
 namespace ERP.Shared.Contracts.DTOs.SalesService.Customer.Responses;
 
-public class CreateCustomerResponse : CreateCurrentResponse
+public class GetCustomerResponse : GetCurrentResponse
 {
 }

@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 
 namespace ERP.Shared.Contracts.DTOs.SalesService.Customer.Requests;
 
-public class CreateCustomerRequest : CreateCurrentRequest
+public class DeleteCustomerRequest : DeleteCurrentRequest
 {
 }
