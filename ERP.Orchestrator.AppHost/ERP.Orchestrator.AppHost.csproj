@@ -16,4 +16,11 @@
     <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="9.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ERP.Orchestrator.Gateway\ERP.Orchestrator.Gateway.csproj" />
+    <ProjectReference Include="..\Services\ProductService\ERP.ProductService.API\ERP.ProductService.API.csproj" />
+    <ProjectReference Include="..\Services\PurchaseService\ERP.PurchaseService.API\ERP.PurchaseService.API.csproj" />
+    <ProjectReference Include="..\Services\SalesService\ERP.SalesService.API\ERP.SalesService.API.csproj" />
+  </ItemGroup>
+
 </Project>
