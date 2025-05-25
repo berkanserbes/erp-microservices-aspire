@@ -1,6 +1,7 @@
 using ERP.PurchaseService.Application.Services;
 using ERP.PurchaseService.Infrastructure.Contexts;
 using ERP.PurchaseService.Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<PurchaseDbContext>(options =>
 {
 	// Configure postgresql db
-	//options.UseNpgsql(builder.Configuration.GetConnectionString("PurchaseDatabase"));
+	options.UseNpgsql(builder.Configuration.GetConnectionString("PurchaseDatabase"));
 });
 
 builder.Services.AddControllers();
