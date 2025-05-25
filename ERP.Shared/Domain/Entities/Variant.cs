@@ -9,9 +9,9 @@ namespace ERP.Shared.Domain.Entities;
 
 public class Variant : BaseEntity
 {
-	public string Code { get; protected set; } = string.Empty;
-	public string Name { get; protected set; } = string.Empty;
+	public string Code { get; set; } = string.Empty;
+	public string Name { get; set; } = string.Empty;
 	
-	public Guid ProductId { get; protected set; }
-	public Product Product { get; protected set; } = null!;
+	public Guid ProductId { get; set; }
+	public Product Product { get; set; } = null!;
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ERP.Shared.Contracts.DTOs.ProductService.Variant.Responses;
 
-public class CreateVariantResponse
+public class DeleteVariantResponse
 {
 	public Guid Id { get; set; }
 	public string Code { get; set; } = string.Empty;

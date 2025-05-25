@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERP.Shared.Contracts.DTOs.ProductService.Variant.Responses;
+namespace ERP.Shared.Contracts.DTOs.ProductService.Variant.Requests;
 
-public class CreateVariantResponse
+public class GetVariantRequest
 {
-	public Guid Id { get; set; }
 	public string Code { get; set; } = string.Empty;
 	public string Name { get; set; } = string.Empty;
+
 	public Guid ProductId { get; set; }
 }
