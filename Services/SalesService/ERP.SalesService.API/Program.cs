@@ -1,15 +1,17 @@
 using ERP.SalesService.Application.Services;
 using ERP.SalesService.Infrastructure.Contexts;
 using ERP.SalesService.Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
 // Add services to the container.
 
 builder.Services.AddDbContext<SalesDbContext>(options =>
 {
 	// Configure postgresql db
-	//options.UseNpgsql(builder.Configuration.GetConnectionString("SalesDatabase"));
+	options.UseNpgsql(builder.Configuration.GetConnectionString("SalesDatabase"));
 });
 
 
