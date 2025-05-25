@@ -9,8 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ProductDbContext>(options =>
 {
-	// Configure postgresql db
-	//options.UseNpgsql(builder.Configuration.GetConnectionString("ProductDatabase"));
+	//Configure postgresql db
+	options.UseNpgsql(builder.Configuration.GetConnectionString("ProductDatabase"));
 });
 
 builder.Services.AddControllers();

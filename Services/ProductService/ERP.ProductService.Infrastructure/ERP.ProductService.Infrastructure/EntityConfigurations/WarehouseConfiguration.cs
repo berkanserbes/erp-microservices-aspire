@@ -27,10 +27,10 @@ public class WarehouseConfiguration : BaseEntityConfiguration<Warehouse>
 			.HasMaxLength(50)
 			.IsRequired();
 
-		builder.HasMany(x => x.Locations)
-			   .WithOne()
-			   .HasForeignKey(x => x.WarehouseNumber)
-			   .OnDelete(DeleteBehavior.Cascade);
+		//builder.HasMany(x => x.Locations)
+		//	   .WithOne()
+		//	   .HasForeignKey(x => x.WarehouseNumber)
+		//	   .OnDelete(DeleteBehavior.Cascade);
 
 		base.Configure(builder);
 	}

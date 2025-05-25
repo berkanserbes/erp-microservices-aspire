@@ -4,9 +4,9 @@ namespace ERP.Shared.Domain.Entities;
 
 public class Location : BaseEntity
 {
-	public string Code { get; protected set; } = string.Empty;
-	public string Name { get; protected set; } = string.Empty;
+	public string Code { get;  } = string.Empty;
+	public string Name { get;  } = string.Empty;
 
-	public int WarehouseNumber { get; protected set; }
-	public Warehouse Warehouse { get; protected set; } = null!;
+	public int WarehouseNumber { get; }
+	public Warehouse Warehouse { get; } = null!;
 }

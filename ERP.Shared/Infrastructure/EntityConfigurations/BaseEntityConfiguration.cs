@@ -20,13 +20,13 @@ public class BaseEntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity
 
 		builder.Property(x => x.CreatedAt)
 			   .IsRequired(true)
-			   .HasColumnType("timestamp")
+			   .HasColumnType("timestamp with time zone")
 			   .HasColumnName("created_at")
 			   .HasDefaultValueSql("NOW()");
 
 		builder.Property(x => x.UpdatedAt)
 			   .IsRequired(false)
-			   .HasColumnType("timestamp")
+			   .HasColumnType("timestamp with time zone")
 			   .HasColumnName("updated_at");
 	}
 }
