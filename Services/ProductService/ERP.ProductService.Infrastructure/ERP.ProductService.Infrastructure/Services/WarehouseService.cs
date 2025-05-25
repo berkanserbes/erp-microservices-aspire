@@ -196,7 +196,7 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 			result = new DataResult<GetWarehouseResponse>
 			{
 				IsSuccess = true,
-				Message = "Warehouses retrieved successfully.",
+				Message = "Warehouse retrieved successfully.",
 				Data = warehouse
 			};
 

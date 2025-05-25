@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ERP.Shared.Contracts.DTOs.ProductService.Product.Requests;
 
-public class CreateProductRequest
+public class UpdateProductRequest
 {
 	public string Code { get; set; } = string.Empty;
 	public string Name { get; set; } = string.Empty;

@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace ERP.Shared.Contracts.DTOs.ProductService.Product.Requests;
 
-public class CreateProductRequest
+public class DeleteProductRequest
 {
 	public string Code { get; set; } = string.Empty;
-	public string Name { get; set; } = string.Empty;
-	public short LotTracking { get; set; }
-	public short LocationTracking { get; set; }
-	public short VariantTracking { get; set; }
 }

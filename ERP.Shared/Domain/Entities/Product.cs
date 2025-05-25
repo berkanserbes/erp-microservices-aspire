@@ -9,11 +9,11 @@ namespace ERP.Shared.Domain.Entities;
 
 public class Product : BaseEntity
 {
-	public string Code { get; protected set; } = string.Empty;
-	public string Name { get; protected set; } = string.Empty;
-	public short LotTracking { get; protected set; }
-	public short LocationTracking { get; protected set; }
-	public short VariantTracking { get; protected set; }
+	public string Code { get; set; } = string.Empty;
+	public string Name { get; set; } = string.Empty;
+	public short LotTracking { get; set; }
+	public short LocationTracking { get; set; }
+	public short VariantTracking { get; set; }
 
 	public ICollection<Variant> Variants { get; } = new List<Variant>();
 }

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ERP.Shared.Contracts.DTOs.ProductService.Product.Requests;
+namespace ERP.Shared.Contracts.DTOs.ProductService.Product.Responses;
 
-public class CreateProductRequest
+public class UpdateProductResponse
 {
+	public Guid Id { get; set; }
 	public string Code { get; set; } = string.Empty;
 	public string Name { get; set; } = string.Empty;
 	public short LotTracking { get; set; }
