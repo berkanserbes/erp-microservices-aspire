@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+builder.Services.AddHealthChecks();
 // Add services to the container.
 
 builder.Services.AddDbContext<ProductDbContext>(options =>
@@ -38,6 +39,8 @@ if (app.Environment.IsDevelopment())
 	app.UseSwaggerUI();
 	
 }
+
+app.MapHealthChecks("/health");
 
 app.UseHttpsRedirection();
 

@@ -1,6 +1,5 @@
 ﻿using ERP.SalesService.Application.Services;
 using ERP.SalesService.Infrastructure.Contexts;
-using ERP.Shared.Contracts.DTOs.ProductService.Product.Responses;
 using ERP.Shared.Contracts.DTOs.SalesService.Customer.Requests;
 using ERP.Shared.Contracts.DTOs.SalesService.Customer.Responses;
 using ERP.Shared.Contracts.Results;
@@ -51,7 +50,8 @@ public class CustomerService(ILogger<CustomerService> logger,
 			_context.Customers.Add(customer);
 			await _context.SaveChangesAsync();
 
-			var cacheOptions = new MemoryCacheEntryOptions {
+			var cacheOptions = new MemoryCacheEntryOptions
+			{
 				AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
 				SlidingExpiration = TimeSpan.FromMinutes(2)
 			};
@@ -158,7 +158,7 @@ public class CustomerService(ILogger<CustomerService> logger,
 		DataResult<IEnumerable<GetCustomerResponse>> result = null!;
 		try
 		{
-			if(_memoryCache.TryGetValue("customer:all", out var cachedObjects) && cachedObjects is IEnumerable<GetCustomerResponse> cachedCustomers)
+			if (_memoryCache.TryGetValue("customer:all", out var cachedObjects) && cachedObjects is IEnumerable<GetCustomerResponse> cachedCustomers)
 			{
 				result = new DataResult<IEnumerable<GetCustomerResponse>>
 				{
@@ -181,7 +181,7 @@ public class CustomerService(ILogger<CustomerService> logger,
 				Address = x.Address,
 			}).ToListAsync();
 
-			if(customers.Any())
+			if (customers.Any())
 			{
 				var cacheOptions = new MemoryCacheEntryOptions
 				{

@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\ERP.Orchestrator.ServiceDefaults\ERP.Orchestrator.ServiceDefaults.csproj" />
     <ProjectReference Include="..\ERP.PurchaseService.Application\ERP.PurchaseService.Application.csproj" />
     <ProjectReference Include="..\ERP.PurchaseService.Infrastructure\ERP.PurchaseService.Infrastructure.csproj" />
   </ItemGroup>
