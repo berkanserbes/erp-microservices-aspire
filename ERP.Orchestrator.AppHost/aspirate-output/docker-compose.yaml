@@ -1,0 +1,133 @@
+services:
+  aspire-dashboard:
+    container_name: "aspire-dashboard"
+    image: "mcr.microsoft.com/dotnet/aspire-dashboard:9.3"
+    environment:
+      DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS: "true"
+    ports:
+    - target: 18888
+      published: 18888
+    restart: unless-stopped
+
+  postgres:
+    container_name: "postgres"
+    image: "docker.io/library/postgres:17.4"
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "scram-sha-256"
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "t8YsNAqLdJVo6wZTSVo9la"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      OTEL_SERVICE_NAME: "postgres"
+    ports:
+    - target: 5432
+      published: 5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  portainer:
+    container_name: "portainer"
+    image: "portainer/portainer-ce:latest"
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      OTEL_SERVICE_NAME: "portainer"
+    ports:
+    - target: 9000
+      published: 9000
+    volumes:
+     - /var/run/docker.sock:/var/run/docker.sock
+     - portainer_data:/data
+    restart: unless-stopped
+
+  grafana:
+    container_name: "grafana"
+    image: "grafana/grafana:latest"
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      OTEL_SERVICE_NAME: "grafana"
+    ports:
+    - target: 3000
+      published: 3000
+    restart: unless-stopped
+
+  prometheus:
+    container_name: "prometheus"
+    image: "prom/prometheus:latest"
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      OTEL_SERVICE_NAME: "prometheus"
+    ports:
+    - target: 9090
+      published: 9090
+    restart: unless-stopped
+
+  
+  # --- Service Containers ---
+  productService:
+    container_name: "productService"
+    image: "berkanserbes/erpproductserviceapi:latest"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8080"
+      ConnectionStrings__ProductDatabase: "Host=postgres;Port=5432;Username=postgres;Password=t8YsNAqLdJVo6wZTSVo9la;Database=erp_product_db"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      OTEL_SERVICE_NAME: "productService"
+    ports:
+    - target: 8080
+      published: 10000
+    - target: 8443
+      published: 10001
+    depends_on:
+     - postgres
+    restart: unless-stopped
+
+  salesService:
+    container_name: "salesService"
+    image: "berkanserbes/erpsalesserviceapi:latest"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8080"
+      ConnectionStrings__SalesDatabase: "Host=postgres;Port=5432;Username=postgres;Password=t8YsNAqLdJVo6wZTSVo9la;Database=erp_sales_db"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      OTEL_SERVICE_NAME: "salesService"
+    ports:
+    - target: 8080
+      published: 10002
+    - target: 8443
+      published: 10003
+    depends_on:
+    - postgres
+    restart: unless-stopped
+
+  purchaseService:
+    container_name: "purchaseService"
+    image: "berkanserbes/erppurchaseserviceapi:latest"
+    environment:
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES: "true"
+      OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY: "in_memory"
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      HTTP_PORTS: "8080"
+      ConnectionStrings__PurchaseDatabase: "Host=postgres;Port=5432;Username=postgres;Password=t8YsNAqLdJVo6wZTSVo9la;Database=erp_purchase_db"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "http://aspire-dashboard:18889"
+      OTEL_SERVICE_NAME: "purchaseService"
+    ports:
+    - target: 8080
+      published: 10004
+    - target: 8443
+      published: 10005
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+volumes:
+    postgres_data:
+    portainer_data:
+        

@@ -1,7 +1,9 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var postgres = builder.AddPostgres(name: "postgres");
-var postgresdb = postgres.AddDatabase("postgresdb");
+var postgres = builder.AddPostgres(name: "postgres").WithPgAdmin();
+var productDb = postgres.AddDatabase("ProductDatabase", "erp_product_db");
+var salesDb = postgres.AddDatabase("SalesDatabase", "erp_sales_db");
+var purchaseDb = postgres.AddDatabase("PurchaseDatabase", "erp_purchase_db");
 
 builder.AddContainer(name: "portainer",
 					 image: "portainer/portainer-ce",
