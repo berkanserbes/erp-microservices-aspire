@@ -5,13 +5,15 @@ using ERP.Shared.Contracts.DTOs.ProductService.Product.Responses;
 using ERP.Shared.Contracts.Results;
 using ERP.Shared.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
 namespace ERP.ProductService.Infrastructure.Services;
-public class ProductService(ILogger<ProductService> logger, ProductDbContext context) : IProductService
+public class ProductService(ILogger<ProductService> logger, ProductDbContext context, IMemoryCache memoryCache) : IProductService
 {
 	private readonly ILogger<ProductService> _logger = logger;
 	private readonly ProductDbContext _context = context;
+	private readonly IMemoryCache _memoryCache = memoryCache;
 
 	public async Task<DataResult<CreateProductResponse>> AddAsync(CreateProductRequest request)
 	{
@@ -44,6 +46,15 @@ public class ProductService(ILogger<ProductService> logger, ProductDbContext con
 
 			_context.Products.Add(product);
 			await _context.SaveChangesAsync();
+
+			var cacheOptions = new MemoryCacheEntryOptions
+			{
+				AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
+				SlidingExpiration = TimeSpan.FromMinutes(2)
+			};
+
+			_memoryCache.Set($"product:code:{product.Code}", product, cacheOptions);
+			_memoryCache.Remove("product:all");
 
 			var response = new CreateProductResponse
 			{
@@ -101,6 +112,9 @@ public class ProductService(ILogger<ProductService> logger, ProductDbContext con
 			_context.Products.Remove(existingProduct);
 			await _context.SaveChangesAsync();
 
+			_memoryCache.Remove($"product:code:{existingProduct.Code}");
+			_memoryCache.Remove("product:all");
+
 			var deleteProductResponse = new DeleteProductResponse
 			{
 				Id = existingProduct.Id,
@@ -140,6 +154,18 @@ public class ProductService(ILogger<ProductService> logger, ProductDbContext con
 		DataResult<IEnumerable<GetProductResponse>> result = null!;
 		try
 		{
+			if (_memoryCache.TryGetValue("product:all", out var cachedObj) && cachedObj is IEnumerable<GetProductResponse> cachedProducts)
+			{
+				result = new DataResult<IEnumerable<GetProductResponse>>
+				{
+					IsSuccess = true,
+					Message = "Products retrieved from cache.",
+					Data = cachedProducts
+				};
+				_logger.LogInformation($"Success (GetProductResponse - ProductService.Infrastructure): {result.Message} - {result.Data.Count()}");
+				return result;
+			}
+
 			var products = await _context.Products.AsNoTracking()
 				.Select(x => new GetProductResponse
 				{
@@ -150,6 +176,17 @@ public class ProductService(ILogger<ProductService> logger, ProductDbContext con
 					LotTracking = x.LotTracking,
 					LocationTracking = x.LocationTracking
 				}).ToListAsync();
+
+			if (products.Any())
+			{
+				var cacheOptions = new MemoryCacheEntryOptions
+				{
+					AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
+					SlidingExpiration = TimeSpan.FromMinutes(2)
+				};
+
+				_memoryCache.Set("product:all", products, cacheOptions);
+			}
 
 			result = new DataResult<IEnumerable<GetProductResponse>>
 			{
@@ -180,6 +217,19 @@ public class ProductService(ILogger<ProductService> logger, ProductDbContext con
 		DataResult<GetProductResponse> result = null!;
 		try
 		{
+			if (_memoryCache.TryGetValue($"product:code:{request.Code}", out var cachedObj) && cachedObj is GetProductResponse cachedProduct)
+			{
+				result = new DataResult<GetProductResponse>
+				{
+					IsSuccess = true,
+					Message = $"Product with code ({request.Code}) retrieved from cache.",
+					Data = cachedProduct
+				};
+				_logger.LogInformation($"Success (GetProductResponse - ProductService.Infrastructure): {result.Message} - {result.Data.Id}");
+				return result;
+			}
+
+
 			var product = await _context.Products.AsNoTracking()
 								.Where(x => x.Code == request.Code)
 								.Select(x => new GetProductResponse
@@ -205,6 +255,14 @@ public class ProductService(ILogger<ProductService> logger, ProductDbContext con
 
 				return result;
 			}
+
+			var cacheOptions = new MemoryCacheEntryOptions
+			{
+				AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
+				SlidingExpiration = TimeSpan.FromMinutes(2)
+			};
+
+			_memoryCache.Set($"product:code:{product.Code}", product, cacheOptions);
 
 			result = new DataResult<GetProductResponse>
 			{
@@ -250,6 +308,17 @@ public class ProductService(ILogger<ProductService> logger, ProductDbContext con
 			product.Name = request.Name;
 			_context.Products.Update(product);
 			await _context.SaveChangesAsync();
+
+			_memoryCache.Remove($"product:code:{product.Code}");
+			_memoryCache.Remove("product:all");
+
+			var cacheOptions = new MemoryCacheEntryOptions
+			{
+				AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
+				SlidingExpiration = TimeSpan.FromMinutes(2)
+			};
+
+			_memoryCache.Set($"product:code:{product.Code}", product, cacheOptions);
 
 			UpdateProductResponse updateProductResponse = new()
 			{

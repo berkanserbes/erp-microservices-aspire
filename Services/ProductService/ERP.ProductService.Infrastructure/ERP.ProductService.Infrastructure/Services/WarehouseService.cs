@@ -214,7 +214,7 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 				result = new DataResult<GetWarehouseResponse>
 				{
 					IsSuccess = true,
-					Message = "Warehouses retrieved from cache.",
+					Message = $"Warehouse with number {request.Number} retrieved from cache.",
 					Data = cachedWarehouse
 				};
 				_logger.LogInformation($"Success (GetWarehouseResponse - ProductService.Infrastructure): {result.Message} - {result.Data.Id}");
