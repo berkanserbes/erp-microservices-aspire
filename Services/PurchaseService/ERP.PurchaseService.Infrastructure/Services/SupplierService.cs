@@ -1,19 +1,23 @@
 ﻿using ERP.PurchaseService.Application.Services;
 using ERP.PurchaseService.Infrastructure.Contexts;
+using ERP.Shared.Contracts.DTOs.ProductService.Product.Responses;
 using ERP.Shared.Contracts.DTOs.PurchaseService.Supplier.Requests;
 using ERP.Shared.Contracts.DTOs.PurchaseService.Supplier.Responses;
 using ERP.Shared.Contracts.Results;
 using ERP.Shared.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
 namespace ERP.PurchaseService.Infrastructure.Services;
 
 public class SupplierService(ILogger<SupplierService> logger,
-							 PurchaseDbContext context) : ISupplierService
+							 PurchaseDbContext context,
+							 IMemoryCache memoryCache) : ISupplierService
 {
 	private readonly ILogger<SupplierService> _logger = logger;
 	private readonly PurchaseDbContext _context = context;
+	private readonly IMemoryCache _memoryCache = memoryCache;
 
 	public async Task<DataResult<CreateSupplierResponse>> AddAsync(CreateSupplierRequest request)
 	{
@@ -45,6 +49,17 @@ public class SupplierService(ILogger<SupplierService> logger,
 
 			_context.Suppliers.Add(supplier);
 			await _context.SaveChangesAsync();
+
+			
+			var cacheOptions = new MemoryCacheEntryOptions
+			{
+				AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
+				SlidingExpiration = TimeSpan.FromMinutes(2)
+			};
+
+			_memoryCache.Set($"supplier:code:{supplier.Code}", supplier, cacheOptions);
+			_memoryCache.Remove("supplier:all");
+
 
 			var response = new CreateSupplierResponse
 			{
@@ -102,6 +117,9 @@ public class SupplierService(ILogger<SupplierService> logger,
 			_context.Suppliers.Remove(existingSupplier);
 			await _context.SaveChangesAsync();
 
+			_memoryCache.Remove($"supplier:code:{existingSupplier.Code}");
+			_memoryCache.Remove("supplier:all");
+
 			var deleteSupplierResponse = new DeleteSupplierResponse
 			{
 				Id = existingSupplier.Id,
@@ -142,6 +160,18 @@ public class SupplierService(ILogger<SupplierService> logger,
 		DataResult<IEnumerable<GetSupplierResponse>> result = null!;
 		try
 		{
+			if(_memoryCache.TryGetValue("supplier:all", out var cachedObjects) && cachedObjects is IEnumerable<GetSupplierResponse> cachedSuppliers)
+			{
+				result = new DataResult<IEnumerable<GetSupplierResponse>>
+				{
+					IsSuccess = true,
+					Message = "Suppliers retrieved from cache.",
+					Data = cachedSuppliers
+				};
+				_logger.LogInformation($"Success (GetSupplierResponse - PurchaseService.Infrastructure): {result.Message} - {result.Data.Count()}");
+				return result;
+			}
+
 			var suppliers = await _context.Suppliers.AsNoTracking().Select(x => new GetSupplierResponse
 			{
 				Id = x.Id,
@@ -151,6 +181,17 @@ public class SupplierService(ILogger<SupplierService> logger,
 				Phone = x.Phone,
 				Address = x.Address,
 			}).ToListAsync();
+
+			if (suppliers.Any())
+			{
+				var cacheOptions = new MemoryCacheEntryOptions
+				{
+					AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
+					SlidingExpiration = TimeSpan.FromMinutes(2)
+				};
+
+				_memoryCache.Set("supplier:all", suppliers, cacheOptions);
+			}
 
 			result = new DataResult<IEnumerable<GetSupplierResponse>>
 			{
@@ -180,6 +221,18 @@ public class SupplierService(ILogger<SupplierService> logger,
 		DataResult<GetSupplierResponse> result = null!;
 		try
 		{
+			if (_memoryCache.TryGetValue($"supplier:code:{request.Code}", out var cachedObj) && cachedObj is GetSupplierResponse cachedSupplier)
+			{
+				result = new DataResult<GetSupplierResponse>
+				{
+					IsSuccess = true,
+					Message = $"Supplier with code ({request.Code}) retrieved from cache.",
+					Data = cachedSupplier
+				};
+				_logger.LogInformation($"Success (GetSupplierResponse - PurchaseService.Infrastructure): {result.Message} - {result.Data.Id}");
+				return result;
+			}
+
 			var supplier = await _context.Suppliers.AsNoTracking()
 													.Where(x => x.Code == request.Code)
 													.Select(x => new GetSupplierResponse
@@ -206,6 +259,13 @@ public class SupplierService(ILogger<SupplierService> logger,
 				return result;
 			}
 
+			var cacheOptions = new MemoryCacheEntryOptions
+			{
+				AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
+				SlidingExpiration = TimeSpan.FromMinutes(2)
+			};
+
+			_memoryCache.Set($"supplier:code:{supplier.Code}", supplier, cacheOptions);
 
 			result = new DataResult<GetSupplierResponse>
 			{
@@ -257,6 +317,9 @@ public class SupplierService(ILogger<SupplierService> logger,
 
 			_context.Suppliers.Update(supplier);
 			await _context.SaveChangesAsync();
+
+			_memoryCache.Remove($"supplier:code:{supplier.Code}");
+			_memoryCache.Remove("supplier:all");
 
 			UpdateSupplierResponse updateSupplierResponse = new UpdateSupplierResponse
 			{
