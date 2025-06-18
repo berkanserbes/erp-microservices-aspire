@@ -14,6 +14,7 @@ builder.Services.AddDbContext<PurchaseDbContext>(options =>
 });
 
 builder.Services.AddControllers();
+builder.Services.AddMemoryCache();
 
 builder.Services.AddScoped<ISupplierService, SupplierService>();
 

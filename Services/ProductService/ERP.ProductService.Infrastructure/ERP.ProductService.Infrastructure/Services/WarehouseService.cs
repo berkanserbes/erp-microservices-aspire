@@ -5,15 +5,18 @@ using ERP.Shared.Contracts.DTOs.ProductService.Warehouse.Responses;
 using ERP.Shared.Contracts.Results;
 using ERP.Shared.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
 namespace ERP.ProductService.Infrastructure.Services;
 
 public class WarehouseService(ILogger<WarehouseService> logger,
-							  ProductDbContext context) : IWarehouseService
+							  ProductDbContext context,
+							  IMemoryCache memoryCache) : IWarehouseService
 {
 	private readonly ILogger<WarehouseService> _logger = logger;
 	private readonly ProductDbContext _context = context;
+	private readonly IMemoryCache _memoryCache = memoryCache;
 
 	public async Task<DataResult<CreateWarehouseResponse>> AddAsync(CreateWarehouseRequest request)
 	{
@@ -44,6 +47,15 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 
 			_context.Warehouses.Add(warehouse);
 			await _context.SaveChangesAsync();
+
+			var cacheOptions = new MemoryCacheEntryOptions
+			{
+				AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
+				SlidingExpiration = TimeSpan.FromMinutes(2)
+			};
+
+			_memoryCache.Set($"warehouse:number:{warehouse.Number}", warehouse, cacheOptions);
+			_memoryCache.Remove("warehouse:list");
 
 			var response = new CreateWarehouseResponse
 			{
@@ -98,6 +110,9 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 			_context.Warehouses.Remove(existingWarehouse);
 			await _context.SaveChangesAsync();
 
+			_memoryCache.Remove($"warehouse:number:{existingWarehouse.Number}");
+			_memoryCache.Remove("warehouse:list");
+			
 			var deleteWarehouseResponse = new DeleteWarehouseResponse
 			{
 				Id = existingWarehouse.Id,
@@ -134,6 +149,18 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 		DataResult<IEnumerable<GetWarehouseResponse>> result = null!;
 		try
 		{
+			if (_memoryCache.TryGetValue("warehouse:all", out var cachedObj) && cachedObj is IEnumerable<GetWarehouseResponse> cachedWarehouses)
+			{
+				result = new DataResult<IEnumerable<GetWarehouseResponse>>
+				{
+					IsSuccess = true,
+					Message = "Warehouses retrieved from cache.",
+					Data = cachedWarehouses
+				};
+				_logger.LogInformation($"Success (GetWarehouseResponse - ProductService.Infrastructure): {result.Message} - {result.Data.Count()}");
+				return result;
+			}
+
 			var warehouses = await _context.Warehouses.AsNoTracking()
 				.Select(x => new GetWarehouseResponse
 				{
@@ -141,6 +168,17 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 					Number = x.Number,
 					Name = x.Name
 				}).ToListAsync();
+
+			if (warehouses.Any())
+			{
+				var cacheOptions = new MemoryCacheEntryOptions
+				{
+					AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
+					SlidingExpiration = TimeSpan.FromMinutes(2)
+				};
+
+				_memoryCache.Set("warehouse:all", warehouses, cacheOptions);
+			}
 
 			result = new DataResult<IEnumerable<GetWarehouseResponse>>
 			{
@@ -171,6 +209,18 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 		DataResult<GetWarehouseResponse> result = null!;
 		try
 		{
+			if(_memoryCache.TryGetValue($"warehouse:number:{request.Number}", out var cachedObj) && cachedObj is GetWarehouseResponse cachedWarehouse)
+			{
+				result = new DataResult<GetWarehouseResponse>
+				{
+					IsSuccess = true,
+					Message = "Warehouses retrieved from cache.",
+					Data = cachedWarehouse
+				};
+				_logger.LogInformation($"Success (GetWarehouseResponse - ProductService.Infrastructure): {result.Message} - {result.Data.Id}");
+				return result;
+			}
+
 			var warehouse = await _context.Warehouses.AsNoTracking()
 				.Where(x => x.Number == request.Number)
 				.Select(x => new GetWarehouseResponse
@@ -192,6 +242,14 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 				_logger.LogWarning($"Warning (GetWarehouseResponse - ProductService.Infrastructure): {result.Message}");
 				return result;
 			}
+
+			var cacheOptions = new MemoryCacheEntryOptions
+			{
+				AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
+				SlidingExpiration = TimeSpan.FromMinutes(2)
+			};
+
+			_memoryCache.Set($"warehouse:number:{request.Number}", warehouse, cacheOptions);
 
 			result = new DataResult<GetWarehouseResponse>
 			{
@@ -239,6 +297,16 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 			warehouse.Name = updateWarehouseRequest.Name;
 			_context.Warehouses.Update(warehouse);
 			await _context.SaveChangesAsync();
+
+			_memoryCache.Remove($"warehouse:number:{warehouse.Number}");
+			_memoryCache.Remove("warehouse:list");
+
+			var cacheOptions = new MemoryCacheEntryOptions
+			{
+				AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
+				SlidingExpiration = TimeSpan.FromMinutes(2)
+			};
+			_memoryCache.Set($"warehouse:number:{warehouse.Number}", warehouse, cacheOptions);
 
 			UpdateWarehouseResponse updateWarehouseResponse = new UpdateWarehouseResponse
 			{

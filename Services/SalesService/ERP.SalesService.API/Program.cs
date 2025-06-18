@@ -16,6 +16,7 @@ builder.Services.AddDbContext<SalesDbContext>(options =>
 
 
 builder.Services.AddControllers();
+builder.Services.AddMemoryCache();
 
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 

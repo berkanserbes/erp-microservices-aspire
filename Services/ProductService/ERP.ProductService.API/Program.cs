@@ -15,6 +15,7 @@ builder.Services.AddDbContext<ProductDbContext>(options =>
 });
 
 builder.Services.AddControllers();
+builder.Services.AddMemoryCache();
 
 builder.Services.AddScoped<IWarehouseService, WarehouseService>();
 builder.Services.AddScoped<IProductService, ProductService>();
