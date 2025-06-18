@@ -13,6 +13,10 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Services/PurchaseService/ERP.PurchaseService.API/ERP.PurchaseService.API.csproj", "Services/PurchaseService/ERP.PurchaseService.API/"]
+COPY ["ERP.Orchestrator.ServiceDefaults/ERP.Orchestrator.ServiceDefaults.csproj", "ERP.Orchestrator.ServiceDefaults/"]
+COPY ["Services/PurchaseService/ERP.PurchaseService.Application/ERP.PurchaseService.Application.csproj", "Services/PurchaseService/ERP.PurchaseService.Application/"]
+COPY ["ERP.Shared/ERP.Shared.csproj", "ERP.Shared/"]
+COPY ["Services/PurchaseService/ERP.PurchaseService.Infrastructure/ERP.PurchaseService.Infrastructure.csproj", "Services/PurchaseService/ERP.PurchaseService.Infrastructure/"]
 RUN dotnet restore "./Services/PurchaseService/ERP.PurchaseService.API/ERP.PurchaseService.API.csproj"
 COPY . .
 WORKDIR "/src/Services/PurchaseService/ERP.PurchaseService.API"
