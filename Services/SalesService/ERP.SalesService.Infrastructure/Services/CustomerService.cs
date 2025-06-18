@@ -1,19 +1,23 @@
 ﻿using ERP.SalesService.Application.Services;
 using ERP.SalesService.Infrastructure.Contexts;
+using ERP.Shared.Contracts.DTOs.ProductService.Product.Responses;
 using ERP.Shared.Contracts.DTOs.SalesService.Customer.Requests;
 using ERP.Shared.Contracts.DTOs.SalesService.Customer.Responses;
 using ERP.Shared.Contracts.Results;
 using ERP.Shared.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
 namespace ERP.SalesService.Infrastructure.Services;
 
 public class CustomerService(ILogger<CustomerService> logger,
-							SalesDbContext context) : ICustomerService
+							SalesDbContext context,
+							IMemoryCache memoryCache) : ICustomerService
 {
 	private readonly ILogger<CustomerService> _logger = logger;
 	private readonly SalesDbContext _context = context;
+	private readonly IMemoryCache _memoryCache = memoryCache;
 
 
 	public async Task<DataResult<CreateCustomerResponse>> AddAsync(CreateCustomerRequest request)
@@ -46,6 +50,14 @@ public class CustomerService(ILogger<CustomerService> logger,
 
 			_context.Customers.Add(customer);
 			await _context.SaveChangesAsync();
+
+			var cacheOptions = new MemoryCacheEntryOptions {
+				AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
+				SlidingExpiration = TimeSpan.FromMinutes(2)
+			};
+
+			_memoryCache.Set($"customer:code:{customer.Code}", customer, cacheOptions);
+			_memoryCache.Remove("customer:all");
 
 			var response = new CreateCustomerResponse
 			{
@@ -103,6 +115,9 @@ public class CustomerService(ILogger<CustomerService> logger,
 			_context.Customers.Remove(existingCustomer);
 			await _context.SaveChangesAsync();
 
+			_memoryCache.Remove($"customer:code:{existingCustomer.Code}");
+			_memoryCache.Remove("customer:all");
+
 			var deleteCustomerResponse = new DeleteCustomerResponse
 			{
 				Id = existingCustomer.Id,
@@ -143,6 +158,19 @@ public class CustomerService(ILogger<CustomerService> logger,
 		DataResult<IEnumerable<GetCustomerResponse>> result = null!;
 		try
 		{
+			if(_memoryCache.TryGetValue("customer:all", out var cachedObjects) && cachedObjects is IEnumerable<GetCustomerResponse> cachedCustomers)
+			{
+				result = new DataResult<IEnumerable<GetCustomerResponse>>
+				{
+					IsSuccess = true,
+					Message = "Customers retrieved from cache.",
+					Data = cachedCustomers
+				};
+
+				_logger.LogInformation($"Success (GetCustomerResponse - SalesService.Infrastructure): {result.Message} - {result.Data.Count()}");
+				return result;
+			}
+
 			var customers = await _context.Customers.AsNoTracking().Select(x => new GetCustomerResponse
 			{
 				Id = x.Id,
@@ -152,6 +180,17 @@ public class CustomerService(ILogger<CustomerService> logger,
 				Phone = x.Phone,
 				Address = x.Address,
 			}).ToListAsync();
+
+			if(customers.Any())
+			{
+				var cacheOptions = new MemoryCacheEntryOptions
+				{
+					AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
+					SlidingExpiration = TimeSpan.FromMinutes(2)
+				};
+
+				_memoryCache.Set("customer:all", customers, cacheOptions);
+			}
 
 			result = new DataResult<IEnumerable<GetCustomerResponse>>
 			{
@@ -181,6 +220,18 @@ public class CustomerService(ILogger<CustomerService> logger,
 		DataResult<GetCustomerResponse> result = null!;
 		try
 		{
+			if (_memoryCache.TryGetValue($"customer:code:{request.Code}", out var cachedObj) && cachedObj is GetCustomerResponse cachedProduct)
+			{
+				result = new DataResult<GetCustomerResponse>
+				{
+					IsSuccess = true,
+					Message = $"Customer with code ({request.Code}) retrieved from cache.",
+					Data = cachedProduct
+				};
+				_logger.LogInformation($"Success (GetCustomerResponse - SalesService.Infrastructure): {result.Message} - {result.Data.Id}");
+				return result;
+			}
+
 			var customer = await _context.Customers.AsNoTracking()
 													.Where(x => x.Code == request.Code)
 													.Select(x => new GetCustomerResponse
@@ -207,6 +258,13 @@ public class CustomerService(ILogger<CustomerService> logger,
 				return result;
 			}
 
+			var cacheOptions = new MemoryCacheEntryOptions
+			{
+				AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
+				SlidingExpiration = TimeSpan.FromMinutes(2)
+			};
+
+			_memoryCache.Set($"customer:code:{customer.Code}", customer, cacheOptions);
 
 			result = new DataResult<GetCustomerResponse>
 			{
@@ -258,6 +316,17 @@ public class CustomerService(ILogger<CustomerService> logger,
 
 			_context.Customers.Update(customer);
 			await _context.SaveChangesAsync();
+
+			_memoryCache.Remove($"customer:code:{customer.Code}");
+			_memoryCache.Remove("customer:all");
+
+			var cacheOptions = new MemoryCacheEntryOptions
+			{
+				AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
+				SlidingExpiration = TimeSpan.FromMinutes(2)
+			};
+
+			_memoryCache.Set($"customer:code:{customer.Code}", customer, cacheOptions);
 
 			UpdateCustomerResponse updateCustomerResponse = new UpdateCustomerResponse
 			{
