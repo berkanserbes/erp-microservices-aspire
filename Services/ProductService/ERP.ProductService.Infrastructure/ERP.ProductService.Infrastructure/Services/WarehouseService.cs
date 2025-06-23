@@ -55,7 +55,7 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 			};
 
 			_memoryCache.Set($"warehouse:number:{warehouse.Number}", warehouse, cacheOptions);
-			_memoryCache.Remove("warehouse:list");
+			_memoryCache.Remove("warehouse:all");
 
 			var response = new CreateWarehouseResponse
 			{
@@ -111,7 +111,7 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 			await _context.SaveChangesAsync();
 
 			_memoryCache.Remove($"warehouse:number:{existingWarehouse.Number}");
-			_memoryCache.Remove("warehouse:list");
+			_memoryCache.Remove("warehouse:all");
 			
 			var deleteWarehouseResponse = new DeleteWarehouseResponse
 			{
@@ -299,7 +299,7 @@ public class WarehouseService(ILogger<WarehouseService> logger,
 			await _context.SaveChangesAsync();
 
 			_memoryCache.Remove($"warehouse:number:{warehouse.Number}");
-			_memoryCache.Remove("warehouse:list");
+			_memoryCache.Remove("warehouse:all");
 
 			var cacheOptions = new MemoryCacheEntryOptions
 			{
