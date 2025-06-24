@@ -1,3 +1,5 @@
+using ERP.Orchestrator.AppHost.Extensions;
+
 var builder = DistributedApplication.CreateBuilder(args);
 
 var postgres = builder.AddPostgres(name: "postgres").WithPgAdmin();
@@ -24,10 +26,10 @@ builder.AddContainer(name: "prometheus",
 
 //var redis = builder.AddRedis("cache");
 
-builder.AddProject<Projects.ERP_ProductService_API>("productService");
+builder.AddProject<Projects.ERP_ProductService_API>("productService").WithSwaggerUI().WithScalar().WithReDoc();
 
-builder.AddProject<Projects.ERP_SalesService_API>("salesService");
+builder.AddProject<Projects.ERP_SalesService_API>("salesService").WithSwaggerUI().WithScalar().WithReDoc();
 
-builder.AddProject<Projects.ERP_PurchaseService_API>("purchaseService");
+builder.AddProject<Projects.ERP_PurchaseService_API>("purchaseService").WithSwaggerUI().WithScalar().WithReDoc();
 
 builder.Build().Run();
