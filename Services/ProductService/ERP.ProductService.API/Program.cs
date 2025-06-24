@@ -2,6 +2,7 @@ using ERP.ProductService.Application.Services;
 using ERP.ProductService.Infrastructure.Contexts;
 using ERP.ProductService.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,7 +34,13 @@ var app = builder.Build();
 app.MapOpenApi();
 app.UseSwagger();
 app.UseSwaggerUI();
-	
+app.UseReDoc(options =>
+{
+	options.SpecUrl("/openapi/v1.json");
+});
+app.MapScalarApiReference();
+
+
 app.MapHealthChecks("/health");
 
 app.UseHttpsRedirection();
